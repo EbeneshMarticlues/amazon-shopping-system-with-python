@@ -1,0 +1,77 @@
+class Product:
+    def __init__(self, name, price, description):
+        self.name = name
+        self.price = price
+        self.description = description
+
+class ShoppingCart:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, item):
+        self.items.append(item)
+
+    def remove_item(self, item):
+        if item in self.items:
+            self.items.remove(item)
+
+    def get_total(self):
+        total = 0
+        for item in self.items:
+            total += item.price
+        return total
+
+class Store:
+    def __init__(self):
+        self.products = []
+        self.cart = ShoppingCart()
+
+    def add_product(self, product):
+        self.products.append(product)
+
+    def remove_product(self, product):
+        if product in self.products:
+            self.products.remove(product)
+
+    def display_products(self):
+        print('--- Products ---')
+        for product in self.products:
+            print(product.name, '-', product.price)
+
+    def display_cart(self):
+        print('--- Shopping Cart ---')
+        for item in self.cart.items:
+            print(item.name, '-', item.price)
+        print('Total:', self.cart.get_total())
+
+    def checkout(self):
+        print('Checking out...')
+        self.display_cart()
+        self.cart = ShoppingCart()
+        print('Thank you for shopping!')
+
+if __name__ == '__main__':
+    # create some example products
+    product1 = Product('T-Shirt', 19.99, 'A stylish and comfortable shirt.')
+    product2 = Product('Jeans', 39.99, 'High-quality denim jeans.')
+    product3 = Product('Sneakers', 59.99, 'Comfortable and durable athletic shoes.')
+
+    # create the store and add the products
+    store = Store()
+    store.add_product(product1)
+    store.add_product(product2)
+    store.add_product(product3)
+
+    # display the products and allow the user to add items to the cart
+    store.display_products()
+    while True:
+        choice = input('Enter a product name to add to your cart, or type "checkout" to complete your purchase: ')
+        if choice == 'checkout':
+            store.checkout()
+            break
+        else:
+            for product in store.products:
+                if product.name == choice:
+                    store.cart.add_item(product)
+                    break
+            store.display_cart()
